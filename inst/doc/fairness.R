@@ -1,182 +1,172 @@
-## ---- include=FALSE------------------------------------------------------
-devtools::load_all(".")
+## ---- include=FALSE-----------------------------------------------------------
+devtools::load_all('.')
 
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = '#>'
 )
 library(fairness)
 
-## ----eval = FALSE--------------------------------------------------------
-#  install.packages("fairness")
+## ----eval = FALSE-------------------------------------------------------------
+#  install.packages('fairness')
 #  library(fairness)
 
-## ----eval = TRUE---------------------------------------------------------
-data("compas")
+## ----eval = TRUE--------------------------------------------------------------
+data('compas')
 
-## ----eval = FALSE--------------------------------------------------------
-#  data("germancredit")
+## ----eval = FALSE-------------------------------------------------------------
+#  data('germancredit')
 
-## ----eval = FALSE--------------------------------------------------------
-#  dem_parity(data  = compas,
-#             group = "ethnicity",
-#             probs = "probability",
-#             preds = NULL,
-#             outcome_levels = c("no","yes"),
-#             cutoff = 0.5,
-#             base   = "Caucasian")
+## ----eval = FALSE-------------------------------------------------------------
+#  dem_parity(data    = compas,
+#             outcome = 'Two_yr_Recidivism',
+#             group   = 'ethnicity',
+#             probs   = 'probability',
+#             preds_levels = c('no','yes'),
+#             cutoff  = 0.5,
+#             base    = 'Caucasian')
 
-## ----eval = FALSE--------------------------------------------------------
-#  prop_parity(data  = compas,
-#              group = "ethnicity",
-#              probs = "probability",
-#              preds = NULL,
-#              outcome_levels = c("no","yes"),
-#              cutoff = 0.5,
-#              base   = "Caucasian")
+## ----eval = FALSE-------------------------------------------------------------
+#  prop_parity(data    = compas,
+#              outcome = 'Two_yr_Recidivism',
+#              group   = 'ethnicity',
+#              probs   = 'probability',
+#              preds_levels = c('no','yes'),
+#              cutoff  = 0.5,
+#              base    = 'Caucasian')
 
-## ----eval = FALSE--------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  equal_odds(data    = compas,
-#             outcome = "Two_yr_Recidivism",
-#             group   = "ethnicity",
-#             probs   = "probability",
-#             preds   = NULL,
-#             outcome_levels = c("no","yes"),
+#             outcome = 'Two_yr_Recidivism',
+#             group   = 'ethnicity',
+#             probs   = 'probability',
+#             preds_levels = c('no','yes'),
 #             cutoff = 0.5,
-#             base   = "African_American")
+#             base   = 'African_American')
 
-## ----eval = FALSE--------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  pred_rate_parity(data    = compas,
-#                   outcome = "Two_yr_Recidivism",
-#                   group   = "ethnicity",
-#                   probs   = "probability",
-#                   preds   = NULL,
-#                   outcome_levels = c("no","yes"),
+#                   outcome = 'Two_yr_Recidivism',
+#                   group   = 'ethnicity',
+#                   probs   = 'probability',
+#                   preds_levels = c('no','yes'),
 #                   cutoff = 0.5,
-#                   base   = "African_American")
+#                   base   = 'African_American')
 
-## ----eval = FALSE--------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  acc_parity(data    = compas,
-#             outcome = "Two_yr_Recidivism",
-#             group   = "ethnicity",
-#             probs   = "probability",
+#             outcome = 'Two_yr_Recidivism',
+#             group   = 'ethnicity',
+#             probs   = 'probability',
 #             preds   = NULL,
-#             outcome_levels = c("no","yes"),
+#             preds_levels = c('no','yes'),
 #             cutoff = 0.5,
-#             base   = "African_American")
+#             base   = 'African_American')
 
-## ----eval = FALSE--------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  fnr_parity(data    = compas,
-#             outcome = "Two_yr_Recidivism",
-#             group   = "ethnicity",
-#             probs   = "probability",
-#             preds   = NULL,
-#             outcome_levels = c("no","yes"),
+#             outcome = 'Two_yr_Recidivism',
+#             group   = 'ethnicity',
+#             probs   = 'probability',
+#             preds_levels = c('no','yes'),
 #             cutoff = 0.5,
-#             base   = "African_American")
+#             base   = 'African_American')
 
-## ----eval = FALSE--------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  fpr_parity(data    = compas,
-#             outcome = "Two_yr_Recidivism",
-#             group   = "ethnicity",
-#             probs   = "probability",
-#             preds   = NULL,
-#             outcome_levels = c("no","yes"),
+#             outcome = 'Two_yr_Recidivism',
+#             group   = 'ethnicity',
+#             probs   = 'probability',
+#             preds_levels = c('no','yes'),
 #             cutoff = 0.5,
-#             base   = "African_American")
+#             base   = 'African_American')
 
-## ----eval = FALSE--------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  npv_parity(data    = compas,
-#             outcome = "Two_yr_Recidivism",
-#             group   = "ethnicity",
-#             probs   = "probability",
-#             preds   = NULL,
-#             outcome_levels = c("no","yes"),
+#             outcome = 'Two_yr_Recidivism',
+#             group   = 'ethnicity',
+#             probs   = 'probability',
+#             preds_levels = c('no','yes'),
 #             cutoff = 0.5,
-#             base   = "African_American")
+#             base   = 'African_American')
 
-## ----eval = FALSE--------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  spec_parity(data    = compas,
-#              outcome = "Two_yr_Recidivism",
-#              group   = "ethnicity",
-#              probs   = "probability",
-#              preds   = NULL,
-#              outcome_levels = c("no","yes"),
+#              outcome = 'Two_yr_Recidivism',
+#              group   = 'ethnicity',
+#              probs   = 'probability',
+#              preds_levels = c('no','yes'),
 #              cutoff = 0.5,
-#              base   = "African_American")
+#              base   = 'African_American')
 
-## ----eval = FALSE--------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  roc_parity(data    = compas,
-#             outcome = "Two_yr_Recidivism",
-#             group   = "ethnicity",
-#             probs   = "probability",
-#             outcome_levels = c("no","yes"),
-#             base = "African_American")
+#             outcome = 'Two_yr_Recidivism',
+#             group   = 'ethnicity',
+#             probs   = 'probability',
+#             preds_levels = c('no','yes'),
+#             base = 'African_American')
 
-## ----eval = FALSE--------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  mcc_parity(data    = compas,
-#             outcome = "Two_yr_Recidivism",
-#             group   = "ethnicity",
-#             probs   = "probability",
-#             preds   = NULL,
-#             outcome_levels = c("no","yes"),
+#             outcome = 'Two_yr_Recidivism',
+#             group   = 'ethnicity',
+#             probs   = 'probability',
+#             preds_levels = c('no','yes'),
 #             cutoff = 0.5,
-#             base   = "African_American")
+#             base   = 'African_American')
 
-## ----echo = FALSE--------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 output <- pred_rate_parity(data = compas, 
-                 outcome = "Two_yr_Recidivism", 
-                 group   = "ethnicity",
-                 probs   = "probability", 
-                 preds   = NULL,
-                 outcome_levels = c("no","yes"), 
-                 cutoff = 0.5, 
-                 base   = "Caucasian")
+                           outcome = 'Two_yr_Recidivism', 
+                           group   = 'ethnicity',
+                           probs   = 'probability', 
+                           preds_levels = c('no','yes'), 
+                           cutoff = 0.5, 
+                           base   = 'Caucasian')
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 output$Metric
 
-## ----echo = FALSE--------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 output <- pred_rate_parity(data = compas, 
-                 outcome = "Two_yr_Recidivism", 
-                 group   = "ethnicity",
-                 probs   = "probability", 
-                 preds   = NULL,
-                 outcome_levels = c("no","yes"), 
-                 cutoff = 0.5, 
-                 base   = "Hispanic")
+                           outcome = 'Two_yr_Recidivism', 
+                           group   = 'ethnicity',
+                           probs   = 'probability', 
+                           preds_levels = c('no','yes'), 
+                           cutoff = 0.5, 
+                           base   = 'Hispanic')
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 output$Metric
 
-## ---- fig.width=5, fig.height=3------------------------------------------
+## ---- fig.width=5, fig.height=3-----------------------------------------------
 output$Metric_plot
 
-## ---- fig.width=5, fig.height=3------------------------------------------
+## ---- fig.width=5, fig.height=3-----------------------------------------------
 output$Probability_plot
 
-## ----echo = FALSE--------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 output <- pred_rate_parity(data = compas, 
-                 outcome = "Two_yr_Recidivism", 
-                 group   = "Female",
-                 probs   = "probability", 
-                 preds   = NULL,
-                 outcome_levels = c("no","yes"), 
-                 cutoff = 0.4, 
-                 base = "Male")
+                           outcome = 'Two_yr_Recidivism', 
+                           group   = 'Female',
+                           probs   = 'probability', 
+                           preds_levels = c('no','yes'), 
+                           cutoff = 0.4, 
+                           base = 'Male')
 
-## ---- fig.width=5, fig.height=3------------------------------------------
+## ---- fig.width=5, fig.height=3-----------------------------------------------
 output$Probability_plot
 
-## ----echo = FALSE, message=FALSE-----------------------------------------
+## ----echo = FALSE, message=FALSE----------------------------------------------
 output <- roc_parity(data = compas, 
-                 outcome  = "Two_yr_Recidivism", 
-                 group    = "Female",
-                 probs    = "probability", 
-                 outcome_levels = c("no", "yes"), 
-                 base = "Male")
+                     outcome  = 'Two_yr_Recidivism', 
+                     group    = 'Female',
+                     probs    = 'probability', 
+                     preds_levels = c('no', 'yes'), 
+                     base = 'Male')
 
-## ---- fig.width=5, fig.height=3------------------------------------------
+## ---- fig.width=5, fig.height=3-----------------------------------------------
 output$ROCAUC_plot
 
