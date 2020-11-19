@@ -19,7 +19,8 @@
 #' @param preds_levels The desired levels of the predicted binary outcome. If not defined, levels of the outcome variable are used.
 #' @param outcome_base Base level for the target variable used to compute fairness metrics. Default is the first level of the outcome variable.
 #' @param cutoff Cutoff to generate predicted outcomes from predicted probabilities. Default set to 0.5.
-#' @param base Base level for sensitive group comparison
+#' @param base Base level for sensitive group comparison.
+#' @param group_breaks If group is continuous (e.g., age): either a numeric vector of two or more unique cut points or a single number >= 2 giving the number of intervals into which group feature is to be cut.
 #'
 #' @name dem_parity
 #'
@@ -40,7 +41,14 @@
 #' @export
 
 
-dem_parity <- function(data, outcome, group, probs = NULL, preds = NULL, preds_levels = NULL, outcome_base = NULL, cutoff = 0.5, base = NULL) {
+dem_parity <- function(data, outcome, group, 
+                       probs = NULL, 
+                       preds = NULL, 
+                       preds_levels = NULL, 
+                       outcome_base = NULL, 
+                       cutoff = 0.5, 
+                       base = NULL,
+                       group_breaks = NULL) {
 
     # check if data is data.frame
     if (class(data)[1] != 'data.frame') {
@@ -50,7 +58,7 @@ dem_parity <- function(data, outcome, group, probs = NULL, preds = NULL, preds_l
     
     # convert types, sync levels
     if (is.null(probs) & is.null(preds)) {
-        stop({"Either probs or preds have to be supplied"})
+        stop({'Either probs or preds have to be supplied'})
     }
     if (is.null(probs)) {
         if (length(preds) == 1) {
@@ -62,6 +70,18 @@ dem_parity <- function(data, outcome, group, probs = NULL, preds = NULL, preds_l
             probs <- data[, probs]
         }
         preds_status <- as.factor(as.numeric(probs > cutoff))
+    }
+    
+    # check group feature and cut if needed
+    if ((length(unique(data[, group])) > 10) & (is.null(group_breaks))) {
+        warning('Number of unqiue group levels exceeds 10. Consider specifying `group_breaks`.')
+    }
+    if (!is.null(group_breaks)) {
+        if (is.numeric(data[, group])) {
+            data[, group] <- cut(data[, group], breaks = group_breaks)
+        }else{
+            warning('Attempting to bin a non-numeric group feature.')
+        }
     }
     
     group_status   <- as.factor(data[, group])
@@ -83,7 +103,7 @@ dem_parity <- function(data, outcome, group, probs = NULL, preds = NULL, preds_l
 
     # check lengths
     if (length(group_status) != length(preds_status)) {
-        stop("Predictions/probabilities and group status must be of the same length")
+        stop('Predictions/probabilities and group status must be of the same length')
     }
 
     # relevel group
@@ -92,22 +112,25 @@ dem_parity <- function(data, outcome, group, probs = NULL, preds = NULL, preds_l
     }
     group_status <- relevel(group_status, base)
 
-    # placeholder
-    val <- rep(NA, length(levels(group_status)))
-    names(val) <- levels(group_status)
+    # placeholders
+    val         <- rep(NA, length(levels(group_status)))
+    names(val)  <- levels(group_status)
+    sample_size <- val
 
     # compute value for all groups
     for (i in levels(group_status)) {
-        metric_i <- sum(preds_status[group_status == i])
-        val[i] <- metric_i
+        metric_i       <- sum(preds_status[group_status == i])
+        val[i]         <- metric_i
+        sample_size[i] <- length(preds_status[group_status == i])
     }
-
-    res_table <- rbind(val, val/val[[1]])
-    rownames(res_table) <- c("Positively classified", "Demographic Parity")
+    
+    # aggregate results
+    res_table <- rbind(val, val/val[[1]], sample_size)
+    rownames(res_table) <- c('Positively classified', 'Demographic Parity', 'Group size')
 
     # conversion of metrics to df
     val_df <- as.data.frame(res_table[2, ])
-    colnames(val_df) <- c("val")
+    colnames(val_df) <- c('val')
     val_df$groupst <- rownames(val_df)
     val_df$groupst <- as.factor(val_df$groupst)
     
@@ -118,14 +141,14 @@ dem_parity <- function(data, outcome, group, probs = NULL, preds = NULL, preds_l
     val_df$groupst <- relevel(val_df$groupst, base)
 
     p <- ggplot(val_df, aes(x = groupst, weight = val, fill = groupst)) + geom_bar(alpha = 0.5) +
-        coord_flip() + theme(legend.position = "none") + labs(x = "", y = "Demographic Parity")
+        coord_flip() + theme(legend.position = 'none') + labs(x = '', y = 'Demographic Parity')
 
     # plotting
     if (!is.null(probs)) {
         q <- ggplot(data, aes(x = probs, fill = group_status)) + geom_density(alpha = 0.5) +
-            labs(x = "Predicted probabilities") + guides(fill = guide_legend(title = "")) +
+            labs(x = 'Predicted probabilities') + guides(fill = guide_legend(title = '')) +
             theme(plot.title = element_text(hjust = 0.5)) + xlim(0, 1) + geom_vline(xintercept = cutoff,
-            linetype = "dashed")
+            linetype = 'dashed')
     }
 
     if (is.null(probs)) {
