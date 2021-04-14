@@ -1,6 +1,6 @@
 Package: fairness
 Title: Algorithmic Fairness Metrics
-Version: 1.2.1
+Version: 1.2.2
 Authors@R: c(person('Nikita', 'Kozodoi', email = 'n.kozodoi@icloud.com', role = c('aut', 'cre')),
             person('Tibor', 'V. Varga', email = 'tirgit@hotmail.com', role = c('aut'), comment = c(ORCID = '0000-0002-2383-699X')))
 Maintainer: Nikita Kozodoi <n.kozodoi@icloud.com>
@@ -18,8 +18,8 @@ Imports: caret, devtools, e1071, ggplot2, pROC
 Suggests: testthat, knitr, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2021-03-31 08:48:52 UTC; nikita.kozodoi
+Packaged: 2021-04-14 14:39:30 UTC; kozodoi
 Author: Nikita Kozodoi [aut, cre],
   Tibor V. Varga [aut] (<https://orcid.org/0000-0002-2383-699X>)
 Repository: CRAN
-Date/Publication: 2021-03-31 09:10:06 UTC
+Date/Publication: 2021-04-14 15:00:02 UTC
